@@ -1,3 +1,4 @@
+//imported node modules here
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -28,6 +29,36 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+function auth(req,res,next){
+  console.log(req.headers);
+  var authHeader=req.headers.authorization;
+  if(!authHeader){
+    var err=new Error('You are not authenticated!');
+    res.setHeader('WWW-Authenticate', 'Basic');
+    err.status=401;
+    return next(err);
+  }
+  //auth variable below will contain extracted username and password from base64 string
+  var auth=new Buffer(authHeader.split(' ')[1],'base64').toString().split(':');
+  var username=auth[0];
+  var password=auth[1];
+  //default username and password set here
+  if(username==='admin' && password==='password') {
+    //this next below states that after authentication the request from client will be passed on to next set of middleware and express will try to match the request to specific middleware that will serve the request
+    next();
+  }
+  else{
+    var err=new Error('You are not authenticated!');
+    res.setHeader('WWW-Authenticate', 'Basic');
+    err.status=401;
+    return next(err);
+  }
+
+}
+app.use(auth);
+
+//this below line enables us to serve static data from public folder and we need to put authentication before that
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
