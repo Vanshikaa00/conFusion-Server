@@ -4,14 +4,16 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+//below 2 are required for express sessions
 var session = require('express-session');
-var FileStore=require('session-file-store')(session);
+var FileStore = require('session-file-store')(session);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var dishRouter = require('./routes/dishRouter');
 var leaderRouter = require('./routes/leaderRouter');
 var promoRouter = require('./routes/promoRouter');
+
 
 const mongoose = require('mongoose');
 
@@ -35,61 +37,39 @@ app.use(express.urlencoded({ extended: false }));
 app.use(session({
   name: 'session-id',
   secret: '12345-67890-09876-54321',
-  saveUninitialized:false,
-  resave:false,
-  store:new FileStore()
+  saveUninitialized: false,
+  resave: false,
+  store: new FileStore()
 }));
+
+
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 
 function auth(req, res, next) {
   console.log(req.session);
 
   if (!req.session.user) {
-
-    var authHeader = req.headers.authorization;
-
-    if (!authHeader) {
-      var err = new Error('You are not authenticated!');
-      res.setHeader('WWW-Authenticate', 'Basic');
-      err.status = 401;
-      return next(err);
-    }
-    //auth variable below will contain extracted username and password from base64 string
-    var auth = new Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
-    var username = auth[0];
-    var password = auth[1];
-    //default username and password set here
-    if (username === 'admin' && password === 'password') {
-      //this next below states that after authentication the request from client will be passed on to next set of middleware and express will try to match the request to specific middleware that will serve the request
-     // res.cookie('user','admin',{ signed:true });
-     req.session.user= 'admin';
+    var err = new Error('You are not authenticated!');
+    err.status = 403;
+    return next(err);
+  }
+  else {
+    if (req.session.user === 'authenticated') {
       next();
     }
     else {
       var err = new Error('You are not authenticated!');
-      res.setHeader('WWW-Authenticate', 'Basic');
-      err.status = 401;
+      err.status = 403;
       return next(err);
     }
   }
-else{
-  if(req.session.user=='admin'){
-    next();
-  }
-  else{
-    var err = new Error('You are not authenticated!');
-    res.setHeader('WWW-Authenticate', 'Basic');
-    err.status = 401;
-    return next(err);
-  }
-}
 }
 app.use(auth);
 
 //this below line enables us to serve static data from public folder and we need to put authentication before that
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/dishes', dishRouter);
 app.use('/leaders', leaderRouter);
 app.use('/promotions', promoRouter);
