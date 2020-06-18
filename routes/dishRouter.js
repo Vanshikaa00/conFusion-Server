@@ -1,8 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const authenticate=require('../authenticate');
 const mongoose = require('mongoose');
 const authenticate = require('../authenticate');
 const Dishes = require('../models/dishes');
+
 const dishRouter = express.Router();
 dishRouter.use(bodyParser.json());
 
@@ -16,7 +18,12 @@ dishRouter.route('/')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
+<<<<<<< HEAD
     .post(authenticate.verifyUser, (req, res, next) => {
+=======
+    //authenticate.verifyUser means that if a post request comes in then verify user middleware will execute first and we're checking the user if this is a success user can do post else it'll reply apt reply message
+    .post(authenticate.verifyUser,(req, res, next) => {
+>>>>>>> df1ff83c7b806a7791dacd492b7d323dea800229
         Dishes.create(req.body)
             .then((dish) => {
                 console.log('Dish created', dish);
@@ -26,11 +33,19 @@ dishRouter.route('/')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
+<<<<<<< HEAD
     .put(authenticate.verifyUser, (req, res, next) => {
         res.statusCode = 403;
         res.end('Put operation not supported on dishes');
     })
     .delete(authenticate.verifyUser, (req, res, next) => {
+=======
+    .put(authenticate.verifyUser,(req, res, next) => {
+        res.statusCode = 403;
+        res.end('Put operation not supported on dishes');
+    })
+    .delete(authenticate.verifyUser,(req, res, next) => {
+>>>>>>> df1ff83c7b806a7791dacd492b7d323dea800229
         Dishes.remove({})
             .then((resp) => {
                 res.statusCode = 200;
@@ -52,11 +67,19 @@ dishRouter.route('/:dishId')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
+<<<<<<< HEAD
     .post(authenticate.verifyUser, (req, res, next) => {
         res.statusCode = 403;
         res.end('Post operation not supported on a particular dish');
     })
     .put(authenticate.verifyUser, (req, res, next) => {
+=======
+    .post(authenticate.verifyUser,(req, res, next) => {
+        res.statusCode = 403;
+        res.end('Post operation not supported on a particular dish');
+    })
+    .put(authenticate.verifyUser,(req, res, next) => {
+>>>>>>> df1ff83c7b806a7791dacd492b7d323dea800229
         Dishes.findByIdAndUpdate(req.params.dishId, {
             $set: req.body,
         }, { new: true })
@@ -67,7 +90,11 @@ dishRouter.route('/:dishId')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
+<<<<<<< HEAD
     .delete(authenticate.verifyUser, (req, res, next) => {
+=======
+    .delete(authenticate.verifyUser,(req, res, next) => {
+>>>>>>> df1ff83c7b806a7791dacd492b7d323dea800229
         Dishes.findByIdAndRemove(req.params.dishId)
             .then((resp) => {
                 res.statusCode = 200;
@@ -96,7 +123,11 @@ dishRouter.route('/:dishId/comments')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
+<<<<<<< HEAD
     .post(authenticate.verifyUser, (req, res, next) => {
+=======
+    .post(authenticate.verifyUser,(req, res, next) => {
+>>>>>>> df1ff83c7b806a7791dacd492b7d323dea800229
         Dishes.findById(req.params.dishId)
             .then((dish) => {
                 if (dish != null) {
@@ -116,12 +147,20 @@ dishRouter.route('/:dishId/comments')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
+<<<<<<< HEAD
     .put(authenticate.verifyUser, (req, res, next) => {
+=======
+    .put(authenticate.verifyUser,(req, res, next) => {
+>>>>>>> df1ff83c7b806a7791dacd492b7d323dea800229
         res.statusCode = 403;
         res.end('PUT operation not supported on /dishes/'
             + req.params.dishId + '/comments');
     })
+<<<<<<< HEAD
     .delete(authenticate.verifyUser, (req, res, next) => {
+=======
+    .delete(authenticate.verifyUser,(req, res, next) => {
+>>>>>>> df1ff83c7b806a7791dacd492b7d323dea800229
         Dishes.findById(req.params.dishId)
             .then((dish) => {
                 if (dish != null) {
@@ -166,12 +205,20 @@ dishRouter.route('/:dishId/comments/:commentId')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
+<<<<<<< HEAD
     .post(authenticate.verifyUser, (req, res, next) => {
+=======
+    .post(authenticate.verifyUser,(req, res, next) => {
+>>>>>>> df1ff83c7b806a7791dacd492b7d323dea800229
         res.statusCode = 403;
         res.end('POST operation not supported on /dishes/' + req.params.dishId
             + '/comments/' + req.params.commentId);
     })
+<<<<<<< HEAD
     .put(authenticate.verifyUser, (req, res, next) => {
+=======
+    .put(authenticate.verifyUser,(req, res, next) => {
+>>>>>>> df1ff83c7b806a7791dacd492b7d323dea800229
         Dishes.findById(req.params.dishId)
             .then((dish) => {
                 if (dish != null && dish.comments.id(req.params.commentId) != null) {
@@ -201,7 +248,11 @@ dishRouter.route('/:dishId/comments/:commentId')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
+<<<<<<< HEAD
     .delete(authenticate.verifyUser, (req, res, next) => {
+=======
+    .delete(authenticate.verifyUser,(req, res, next) => {
+>>>>>>> df1ff83c7b806a7791dacd492b7d323dea800229
         Dishes.findById(req.params.dishId)
             .then((dish) => {
                 if (dish != null && dish.comments.id(req.params.commentId) != null) {

@@ -2,7 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Promotions = require('../models/promotions');
+<<<<<<< HEAD
 const authenticate=require('../authenticate');
+=======
+const authenticate= require('../authenticate');
+>>>>>>> df1ff83c7b806a7791dacd492b7d323dea800229
 const promoRouter = express.Router();
 promoRouter.use(bodyParser.json());
 

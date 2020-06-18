@@ -2,7 +2,12 @@ var express = require('express');
 const bodyParser = require('body-parser');
 var User = require('../models/user');
 var passport = require('passport');
+<<<<<<< HEAD
 var authenticate = require('../authenticate');
+=======
+var authenticate=require('../authenticate');
+//const { authenticate } = require('passport');
+>>>>>>> df1ff83c7b806a7791dacd492b7d323dea800229
 
 var router = express.Router();
 router.use(bodyParser.json());
@@ -31,12 +36,22 @@ router.post('/signup', function (req, res, next) {
 });
 
 router.post('/login', passport.authenticate('local'), (req, res, next) => {
+<<<<<<< HEAD
   var token = authenticate.getToken({ _id: req.user._id });
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
   res.json({ success: true, token:token, status: 'You are successfully logged in! ' });
 });
 
+=======
+  var token=authenticate.getToken({_id: req.user._id});
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'application/json');
+  res.json({success:true, token:token, status: 'You are successfully logged in! ' });
+});
+
+
+>>>>>>> df1ff83c7b806a7791dacd492b7d323dea800229
 router.get('/logout', (req, res) => {
   if (req.session) {
     req.session.destroy();
