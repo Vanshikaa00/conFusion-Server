@@ -1,22 +1,18 @@
 var mongoose=require('mongoose');
 var Schema=mongoose.Schema;
+var passportLocalMongoose=require('passport-local-mongoose');
 
 var User=new Schema({
-    username:{
-        type:String,
-        required:true,
-        unique:true
-    },
-    password:{
-        type:String,
-        required:true
-    },
     admin:{
         type:Boolean,
         default:false
     }
 
 });
+
+//support for username and hashed password and hash salt value by using this passport local mongoose plugin
+User.plugin(passportLocalMongoose);
+
 
 //creating mongoose model below
 module.exports=mongoose.model('User',User);
