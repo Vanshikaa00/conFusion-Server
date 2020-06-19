@@ -8,11 +8,7 @@ var logger = require('morgan');
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
 var passport=require('passport');
-<<<<<<< HEAD
 var authenticate=require('./authenticate');
-=======
-var authenticate=require('../conFusionServer/authenticate');
->>>>>>> df1ff83c7b806a7791dacd492b7d323dea800229
 var config=require('./config');
 
 var indexRouter = require('./routes/index');
@@ -25,11 +21,7 @@ var promoRouter = require('./routes/promoRouter');
 const mongoose = require('mongoose');
 
 const Dishes = require('./models/dishes');
-<<<<<<< HEAD
 const url = config.mongoUrl;
-=======
-const url =config.mongoUrl;
->>>>>>> df1ff83c7b806a7791dacd492b7d323dea800229
 const connect = mongoose.connect(url);
 connect.then((db) => {
   console.log('Connected correctly to server');
@@ -51,11 +43,7 @@ app.use(passport.initialize());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-<<<<<<< HEAD
 //this below line enables us to serve static data from public folder and we need to put authentication before that
-=======
-//this below line enables us to serve static data from public folder and we need to put authentication before that anybody can access public folder
->>>>>>> df1ff83c7b806a7791dacd492b7d323dea800229
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/dishes', dishRouter);
