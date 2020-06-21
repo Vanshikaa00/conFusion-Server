@@ -4,6 +4,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
 //below 2 are required for express sessions
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
@@ -11,11 +12,13 @@ var passport = require('passport');
 var authenticate = require('./authenticate');
 var config = require('./config');
 
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var dishRouter = require('./routes/dishRouter');
 var leaderRouter = require('./routes/leaderRouter');
 var promoRouter = require('./routes/promoRouter');
+var uploadRouter = require('./routes/uploadRouter');
 
 
 const mongoose = require('mongoose');
@@ -60,6 +63,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/dishes', dishRouter);
 app.use('/leaders', leaderRouter);
 app.use('/promotions', promoRouter);
+app.use('/imageUpload', uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
